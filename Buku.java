@@ -16,14 +16,27 @@ public class Buku {
     private String nomorISBN;
     private boolean statusKetersediaan;
 
+    public Buku(int idBuku, String judul, String pengarang, String nomorISBN, boolean statusKetersediaan) {
+        this.idBuku = idBuku;
+        this.judul = judul;
+        this.pengarang = pengarang;
+        this.nomorISBN = nomorISBN;
+        this.statusKetersediaan = statusKetersediaan;
+    }
+
     public boolean cek() {
-        // Implementasi pengecekan status ketersediaan buku
-        return false;
+        return statusKetersediaan;
     }
 
     public String displayInfo() {
-        // Implementasi tampilan informasi buku
-        return "";
+        return String.format("ID Buku: %d, Judul: %s, Pengarang: %s, Nomor ISBN: %s, Ketersediaan: %s",
+                idBuku, judul, pengarang, nomorISBN, statusKetersediaan ? "Tersedia" : "Dipinjam");
+    }
+
+    public String getJudul() {
+        return judul;
     }
 }
+
+
 
