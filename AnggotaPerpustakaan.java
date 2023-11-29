@@ -9,20 +9,53 @@ package tahap2_pbo;
  *
  * @author HP
  */
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnggotaPerpustakaan {
     private int idAnggota;
     private int nomorAnggota;
     private String nama;
     private String alamat;
-    private String sejarahPeminjaman;
+    private List<TransaksiPeminjaman> sejarahPeminjaman;
+
+    public AnggotaPerpustakaan(int idAnggota, int nomorAnggota, String nama, String alamat) {
+        this.idAnggota = idAnggota;
+        this.nomorAnggota = nomorAnggota;
+        this.nama = nama;
+        this.alamat = alamat;
+        this.sejarahPeminjaman = new ArrayList<>();
+    }
 
     public void register() {
-        // Implementasi registrasi anggota
+        System.out.println("Anggota berhasil diregistrasi");
     }
 
     public String displayPeminjaman() {
-        // Implementasi tampilan peminjaman
-        return sejarahPeminjaman;
+        StringBuilder result = new StringBuilder("Sejarah Peminjaman:\n");
+        for (TransaksiPeminjaman transaksi : sejarahPeminjaman) {
+            result.append(transaksi.displayInfo()).append("\n");
+        }
+        return result.toString();
     }
+
+    public void tambahPeminjaman(TransaksiPeminjaman transaksi) {
+        sejarahPeminjaman.add(transaksi);
+    }
+
+    public int getIdAnggota() {
+        return idAnggota;
+    }
+
+    public int getNomorAnggota() {
+        return nomorAnggota;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
 }
+
+
 
