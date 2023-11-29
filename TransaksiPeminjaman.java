@@ -1,49 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package pboteori;
-
-import java.util.Date;
-
-/**
- *
- * @author PRADYA
- */
-import java.util.Date;
-
-public class TransaksiPeminjaman {
-    private static int counter = 1;
+class TransaksiPeminjaman {
     private int idTransaksi;
     private AnggotaPerpustakaan anggota;
     private Buku buku;
-    Date tanggalPinjam;
-    int durasiPinjam;
+    private Date tanggalPinjam;
+    private int durasiPinjam;
 
-    public TransaksiPeminjaman(AnggotaPerpustakaan anggota, Buku buku, int durasiPinjam) {
-        this.idTransaksi = counter++;
+    public TransaksiPeminjaman(int idTransaksi, AnggotaPerpustakaan anggota, Buku buku, Date tanggalPinjam, int durasiPinjam) {
+        this.idTransaksi = idTransaksi;
         this.anggota = anggota;
         this.buku = buku;
-        this.tanggalPinjam = new Date();
+        this.tanggalPinjam = tanggalPinjam;
         this.durasiPinjam = durasiPinjam;
-
-        System.out.println(anggota.displayPeminjaman() + "ID Transaksi: " + idTransaksi + "\nBuku: " + buku.displayInfo() +
-                "\nTanggal Pinjam: " + tanggalPinjam + "\nDurasi Pinjam: " + durasiPinjam + " hari\n");
     }
-
-    public String displayInfo() {
-        return "ID Transaksi: " + idTransaksi + "\nAnggota: " + anggota.displayPeminjaman() +
-                "\nBuku: " + buku.displayInfo() + "\nTanggal Pinjam: " + tanggalPinjam +
-                "\nDurasi Pinjam: " + durasiPinjam + " hari";
-    }
-
-    public static int getCounter() {
-        return counter;
-    }
-
-    public static void setCounter(int counter) {
-        TransaksiPeminjaman.counter = counter;
+    
+    public Date getTanggalKembali() {
+        long waktuPinjam = tanggalPinjam.getTime();
+        long waktuKembali = waktuPinjam + (durasiPinjam * 24L * 60L * 60L * 1000L);
+        return new Date(waktuKembali);
     }
 
     public int getIdTransaksi() {
@@ -85,5 +58,6 @@ public class TransaksiPeminjaman {
     public void setDurasiPinjam(int durasiPinjam) {
         this.durasiPinjam = durasiPinjam;
     }
+    
     
 }
