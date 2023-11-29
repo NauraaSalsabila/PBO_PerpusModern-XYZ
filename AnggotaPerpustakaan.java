@@ -3,59 +3,89 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tahap2_pbo;
+package pboteori;
 
 /**
  *
- * @author HP
+ * @author PRADYA
  */
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnggotaPerpustakaan {
+    private static int counter = 1;
     private int idAnggota;
     private int nomorAnggota;
     private String nama;
     private String alamat;
-    private List<TransaksiPeminjaman> sejarahPeminjaman;
+    private String sejarahPeminjaman;
 
-    public AnggotaPerpustakaan(int idAnggota, int nomorAnggota, String nama, String alamat) {
-        this.idAnggota = idAnggota;
+    public AnggotaPerpustakaan(int nomorAnggota, String nama, String alamat) {
+        this.idAnggota = counter++;
         this.nomorAnggota = nomorAnggota;
         this.nama = nama;
         this.alamat = alamat;
-        this.sejarahPeminjaman = new ArrayList<>();
+        this.sejarahPeminjaman = "";
     }
 
     public void register() {
-        System.out.println("Anggota berhasil diregistrasi");
+        List<AnggotaPerpustakaan> anggotaList = new ArrayList<>();
+        anggotaList.add(this);
     }
+    
 
     public String displayPeminjaman() {
-        StringBuilder result = new StringBuilder("Sejarah Peminjaman:\n");
-        for (TransaksiPeminjaman transaksi : sejarahPeminjaman) {
-            result.append(transaksi.displayInfo()).append("\n");
-        }
-        return result.toString();
+        return sejarahPeminjaman;
     }
 
-    public void tambahPeminjaman(TransaksiPeminjaman transaksi) {
-        sejarahPeminjaman.add(transaksi);
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        AnggotaPerpustakaan.counter = counter;
     }
 
     public int getIdAnggota() {
         return idAnggota;
     }
 
+    public void setIdAnggota(int idAnggota) {
+        this.idAnggota = idAnggota;
+    }
+
     public int getNomorAnggota() {
         return nomorAnggota;
+    }
+
+    public void setNomorAnggota(int nomorAnggota) {
+        this.nomorAnggota = nomorAnggota;
     }
 
     public String getNama() {
         return nama;
     }
 
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getSejarahPeminjaman() {
+        return sejarahPeminjaman;
+    }
+
+    public void setSejarahPeminjaman(String sejarahPeminjaman) {
+        this.sejarahPeminjaman = sejarahPeminjaman;
+    }
+    
+    
 }
-
-
-
