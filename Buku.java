@@ -3,21 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tahap2_pbo;
+package pboteori;
+
+import java.util.List;
 
 /**
  *
- * @author HP
+ * @author PRADYA
  */
 public class Buku {
-    private int idBuku;
     private String judul;
     private String pengarang;
     private String nomorISBN;
     private boolean statusKetersediaan;
 
-    public Buku(int idBuku, String judul, String pengarang, String nomorISBN, boolean statusKetersediaan) {
-        this.idBuku = idBuku;
+    public Buku(String judul, String pengarang, String nomorISBN, boolean statusKetersediaan) {
         this.judul = judul;
         this.pengarang = pengarang;
         this.nomorISBN = nomorISBN;
@@ -29,14 +29,7 @@ public class Buku {
     }
 
     public String displayInfo() {
-        return String.format("ID Buku: %d, Judul: %s, Pengarang: %s, Nomor ISBN: %s, Ketersediaan: %s",
-                idBuku, judul, pengarang, nomorISBN, statusKetersediaan ? "Tersedia" : "Dipinjam");
-    }
-
-    public String getJudul() {
-        return judul;
+        return "\nJudul: " + judul + "\nPengarang: " + pengarang +
+                "\nNomor ISBN: " + nomorISBN + "\nStatus Ketersediaan: " + (statusKetersediaan ? "Tersedia" : "Tidak Tersedia");
     }
 }
-
-
-
