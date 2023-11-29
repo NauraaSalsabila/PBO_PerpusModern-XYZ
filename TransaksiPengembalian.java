@@ -16,14 +16,26 @@ public class TransaksiPengembalian {
     private Date tglKembali;
     private TransaksiPeminjaman transaksiPeminjam;
 
+    public TransaksiPengembalian(int idTransaksi, Date tglKembali, TransaksiPeminjaman transaksiPeminjam) {
+        this.idTransaksi = idTransaksi;
+        this.tglKembali = tglKembali;
+        this.transaksiPeminjam = transaksiPeminjam;
+    }
+
     public int Denda() {
-        // Implementasi perhitungan denda pengembalian
-        return 0;
+        int dendaPerHari = 100;
+        Date tanggalPinjam = transaksiPeminjam.getTanggalPinjam();
+        long selisihHari = (tglKembali.getTime() - tanggalPinjam.getTime()) / (24 * 60 * 60 * 1000);
+        int denda = (int) Math.max(0, selisihHari * dendaPerHari);
+        return denda;
     }
 
     public String displayInfo() {
-        // Implementasi tampilan informasi transaksi pengembalian
-        return "";
+        return String.format("ID Transaksi Pengembalian: %d, Tanggal Kembali: %s, Denda: %d",
+                idTransaksi, tglKembali.toString(), Denda());
     }
 }
+
+
+
 
