@@ -14,13 +14,20 @@ public class Notifikasi {
     private AnggotaPerpustakaan anggota;
     private String isi;
 
+    public Notifikasi(int idNotifikasi, AnggotaPerpustakaan anggota, String isi) {
+        this.idNotifikasi = idNotifikasi;
+        this.anggota = anggota;
+        this.isi = isi;
+    }
+
     public void kirimNotifikasi() {
-        // Implementasi pengiriman notifikasi
+        System.out.println("Notifikasi terkirim ke: " + anggota.getNama());
     }
 
     public String displayNotifikasi() {
-        // Implementasi tampilan notifikasi
-        return "";
+        return String.format("ID Notifikasi: %d, Isi: %s", idNotifikasi, isi);
     }
 }
+
+
 
