@@ -1,1 +1,416 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package pboteori;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+
+public class PBOTeori {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Perpustakaan perpustakaan = new Perpustakaan();
+        AnggotaPerpustakaan anggotaLogin = null;
+        Admin adminLogin = null;
+
+        boolean inginLogin = true;
+
+        while (inginLogin) {
+            // Menampilkan menu login atau pendaftaran
+            System.out.println("Selamat datang di Perpustakaan XYZ");
+            System.out.println("1. Login");
+            System.out.println("2. Daftar sebagai Anggota");
+            System.out.print("Pilih jenis aksi (1/2): ");
+
+            int jenisAksi = scanner.nextInt();
+
+            if (jenisAksi == 1) {
+                // Login
+                System.out.println("1. Login sebagai Anggota");
+                System.out.println("2. Login sebagai Admin");
+                System.out.print("Pilih jenis login (1/2): ");
+                int jenisLogin = scanner.nextInt();
+
+                if (jenisLogin == 1) {
+                    // Login sebagai Anggota
+                    System.out.print("Masukkan nomor anggota: ");
+                    String nomorAnggota = scanner.next();
+
+                    anggotaLogin = null;
+                    for (AnggotaPerpustakaan anggota : perpustakaan.getDaftarAnggota()) {
+                        if (anggota.getNomorAnggota().equals(nomorAnggota)) {
+                            anggotaLogin = anggota;
+                            break;
+                        }
+                    }
+
+                    if (anggotaLogin != null) {
+                        System.out.println("Selamat datang, " + anggotaLogin.getNama() + "!");
+                        // Setelah login, tampilkan menu pilihan untuk anggota
+                        tampilkanMenuAnggota(anggotaLogin, perpustakaan, scanner);
+                    } else {
+                        System.out.println("Nomor anggota tidak ditemukan.");
+                    }
+                } else if (jenisLogin == 2) {
+                    // Login sebagai Admin
+                    System.out.print("Masukkan username admin: ");
+                    String usernameAdmin = scanner.next();
+                    System.out.print("Masukkan password admin: ");
+                    String passwordAdmin = scanner.next();
+
+                    adminLogin = null;
+                    for (Admin admin : perpustakaan.getDaftarAdmin()) {
+                        if (admin.getUsername().equals(usernameAdmin) && admin.getPassword().equals(passwordAdmin)) {
+                            adminLogin = admin;
+                            break;
+                        }
+                    }
+
+                    if (adminLogin != null) {
+                        System.out.println("Selamat datang, Admin!");
+                        // Setelah login, tampilkan menu pilihan untuk admin
+                        tampilkanMenuAdmin(adminLogin, perpustakaan, scanner);
+                    } else {
+                        System.out.println("Username atau password admin salah.");
+                    }
+                } else {
+                    System.out.println("Pilihan tidak valid.");
+                }
+            } else if (jenisAksi == 2) {
+                // Pendaftaran Anggota
+                System.out.print("Masukkan nama: ");
+                String namaAnggota = scanner.next();
+                System.out.print("Masukkan alamat: ");
+                String alamatAnggota = scanner.next();
+
+                // Buat objek AnggotaPerpustakaan dan tambahkan ke dalam daftar anggota perpustakaan
+                AnggotaPerpustakaan anggotaBaru = new AnggotaPerpustakaan(namaAnggota, alamatAnggota);
+                anggotaBaru.registerAnggota();
+                perpustakaan.tambahAnggota(anggotaBaru);
+
+                // Tanyakan apakah ingin login lagi atau tidak
+                boolean pilihanValid = false;
+                while (!pilihanValid) {
+                    System.out.print("Apakah ingin login lagi? (y/n): ");
+                    char jawaban = scanner.next().charAt(0);
+
+                    if (jawaban == 'y' || jawaban == 'Y') {
+                        inginLogin = true;
+                        pilihanValid = true;
+                    } else if (jawaban == 'n' || jawaban == 'N') {
+                        inginLogin = false;
+                        pilihanValid = true;
+                    } else {
+                        System.out.println("Pilihan tidak valid.");
+                    }
+                }
+            } else {
+                System.out.println("Pilihan tidak valid.");
+            }
+        }
+    }
+
+    // Metode untuk menampilkan menu pilihan untuk anggota setelah login
+    private static void tampilkanMenuAnggota(AnggotaPerpustakaan anggota, Perpustakaan perpustakaan, Scanner scanner) {
+        boolean inginLogout = false;
+
+        while (!inginLogout) {
+            // Menampilkan menu pilihan untuk anggota
+            System.out.println("Menu Anggota:");
+            System.out.println("1. Pinjam Buku");
+            System.out.println("2. Lihat Riwayat Peminjaman");
+            System.out.println("3. Logout");
+            System.out.print("Pilih nomor menu (1-3): ");
+
+            int pilihanMenu = scanner.nextInt();
+
+            switch (pilihanMenu) {
+                case 1:
+                    // Implementasi pinjam buku
+                    System.out.print("Masukkan nomor ISBN buku yang ingin dipinjam: ");
+                    String nomorISBN = scanner.next();
+                    // (Implementasi logika peminjaman buku)
+                    break;
+                case 2:
+                    // Implementasi lihat riwayat peminjaman
+                    System.out.println("Riwayat Peminjaman:");
+                    System.out.println(anggota.displaySejarahPeminjaman());
+                    break;
+                case 3:
+                    // Logout
+                    System.out.println("Logout berhasil.");
+                    inginLogout = true;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+                    break;
+            }
+        }
+    }
+
+    // Metode untuk menampilkan menu pilihan untuk admin setelah login
+    private static void tampilkanMenuAdmin(Admin admin, Perpustakaan perpustakaan, Scanner scanner) {
+        boolean inginLogout = false;
+
+        while (!inginLogout) {
+            // Menampilkan menu pilihan untuk admin
+            System.out.println("Menu Admin:");
+            System.out.println("1. Tambah Buku");
+            System.out.println("2. Lihat Riwayat Transaksi");
+            System.out.println("3. Logout");
+            System.out.print("Pilih nomor menu (1-3): ");
+
+            int pilihanMenu = scanner.nextInt();
+
+            switch (pilihanMenu) {
+                case 1:
+                    // Implementasi tambah buku
+                    System.out.print("Masukkan judul buku: ");
+                    String judulBuku = scanner.next();
+                    System.out.print("Masukkan pengarang buku: ");
+                    String pengarangBuku = scanner.next();
+                    System.out.print("Masukkan nomor ISBN buku: ");
+                    String nomorISBN = scanner.next();
+                    // (Implementasi logika penambahan buku)
+                    break;
+                case 2:
+                    // Implementasi lihat riwayat transaksi
+                    System.out.println("Riwayat Transaksi:");
+                    // (Implementasi logika untuk melihat riwayat transaksi)
+                    break;
+                case 3:
+                    // Logout
+                    System.out.println("Logout berhasil.");
+                    inginLogout = true;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+                    break;
+            }
+        }
+    }
+}
+
+class AnggotaPerpustakaan {
+    private static int counter = 1;
+
+    private int idAnggota;
+    private String nama;
+    private String nomorAnggota;
+    private String alamat;
+    private String sejarahPeminjaman;
+
+    public AnggotaPerpustakaan(String nama, String alamat) {
+        this.idAnggota = counter++;
+        this.nama = nama;
+        this.nomorAnggota = "AGT" + String.format("%04d", idAnggota);
+        this.alamat = alamat;
+        this.sejarahPeminjaman = "";
+    }
+
+    public void registerAnggota() {
+        // Implementasi pendaftaran anggota
+        System.out.println("Pendaftaran anggota berhasil!");
+        System.out.println("Nomor Anggota: " + nomorAnggota);
+    }
+
+    public String displaySejarahPeminjaman() {
+        return sejarahPeminjaman;
+    }
+
+    public int getIdAnggota() {
+        return idAnggota;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public String getNomorAnggota() {
+        return nomorAnggota;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+}
+
+class Buku {
+    private int idBuku;
+    private String judul;
+    private String pengarang;
+    private String nomorISBN;
+    private boolean statusKetersediaan;
+
+    public Buku(int idBuku, String judul, String pengarang, String nomorISBN) {
+        this.idBuku = idBuku;
+        this.judul = judul;
+        this.pengarang = pengarang;
+        this.nomorISBN = nomorISBN;
+        this.statusKetersediaan = true;
+    }
+
+    public boolean cekKetersediaan() {
+        return statusKetersediaan;
+    }
+
+    public String displayInfoBuku() {
+        return "ID Buku: " + idBuku + "\nJudul: " + judul + "\nPengarang: " + pengarang;
+    }
+}
+
+class TransaksiPeminjaman {
+    private int idTransaksi;
+    private AnggotaPerpustakaan anggota;
+    private Buku buku;
+    private Date tanggalPinjam;
+    private int durasiPinjam;
+
+    public TransaksiPeminjaman(int idTransaksi, AnggotaPerpustakaan anggota, Buku buku, Date tanggalPinjam, int durasiPinjam) {
+        this.idTransaksi = idTransaksi;
+        this.anggota = anggota;
+        this.buku = buku;
+        this.tanggalPinjam = tanggalPinjam;
+        this.durasiPinjam = durasiPinjam;
+    }
+
+    public int hitungBiayaDenda() {
+        // Implementasi perhitungan biaya denda jika buku terlambat dikembalikan
+        return 0;
+    }
+
+    public String displayInfoTransaksi() {
+        return "ID Transaksi: " + idTransaksi + "\nAnggota: " + anggota.displaySejarahPeminjaman() + "\nBuku: " + buku.displayInfoBuku();
+    }
+}
+
+class TransaksiPengembalian {
+    private int idTransaksi;
+    private TransaksiPeminjaman transaksiPeminjaman;
+    private Date tanggalKembali;
+
+    public TransaksiPengembalian(int idTransaksi, TransaksiPeminjaman transaksiPeminjaman, Date tanggalKembali) {
+        this.idTransaksi = idTransaksi;
+        this.transaksiPeminjaman = transaksiPeminjaman;
+        this.tanggalKembali = tanggalKembali;
+    }
+
+    public int kalkulasiDenda() {
+        // Implementasi perhitungan denda jika buku terlambat dikembalikan
+        return 0;
+    }
+
+    public String displayInfoPengembalian() {
+        return "ID Transaksi: " + idTransaksi + "\nTanggal Kembali: " + tanggalKembali + "\n" + transaksiPeminjaman.displayInfoTransaksi();
+    }
+}
+
+class Notifikasi {
+    private int idNotifikasi;
+    private AnggotaPerpustakaan anggota;
+    private String isiNotifikasi;
+
+    public Notifikasi(int idNotifikasi, AnggotaPerpustakaan anggota, String isiNotifikasi) {
+        this.idNotifikasi = idNotifikasi;
+        this.anggota = anggota;
+        this.isiNotifikasi = isiNotifikasi;
+    }
+
+    public void kirimNotifikasi() {
+        // Implementasi pengiriman notifikasi kepada anggota
+    }
+
+    public String displayNotifikasi() {
+        return "ID Notifikasi: " + idNotifikasi + "\nIsi Notifikasi: " + isiNotifikasi;
+    }
+}
+
+class Admin {
+    private int idAdmin;
+    private String namaAdmin;
+    private String username;
+    private String password;
+
+    public Admin(int idAdmin, String namaAdmin, String username, String password) {
+        this.idAdmin = idAdmin;
+        this.namaAdmin = namaAdmin;
+        this.username = username;
+        this.password = password;
+    }
+
+    public boolean validateLogin() {
+        // Implementasi validasi login admin
+        return false;
+    }
+
+    public void tambahBuku() {
+        // Implementasi penambahan buku oleh admin
+    }
+
+    public String getNamaAdmin() {
+        return namaAdmin;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
+
+class Perpustakaan {
+    private List<AnggotaPerpustakaan> daftarAnggota;
+    private List<Buku> daftarBuku;
+    private List<TransaksiPeminjaman> daftarPeminjaman;
+    private List<TransaksiPengembalian> daftarPengembalian;
+    private List<Notifikasi> daftarNotifikasi;
+    private List<Admin> daftarAdmin;
+
+    public Perpustakaan() {
+        daftarAnggota = new ArrayList<>();
+        daftarBuku = new ArrayList<>();
+        daftarPeminjaman = new ArrayList<>();
+        daftarPengembalian = new ArrayList<>();
+        daftarNotifikasi = new ArrayList<>();
+        daftarAdmin = new ArrayList<>();
+    }
+
+    public List<AnggotaPerpustakaan> getDaftarAnggota() {
+        return daftarAnggota;
+    }
+
+    public List<Admin> getDaftarAdmin() {
+        return daftarAdmin;
+    }
+
+    public void tambahAnggota(AnggotaPerpustakaan anggota) {
+        daftarAnggota.add(anggota);
+    }
+
+    public void tambahBuku(Buku buku) {
+        daftarBuku.add(buku);
+    }
+
+    public void tambahTransaksiPeminjaman(TransaksiPeminjaman transaksi) {
+        daftarPeminjaman.add(transaksi);
+    }
+
+    public void tambahTransaksiPengembalian(TransaksiPengembalian transaksi) {
+        daftarPengembalian.add(transaksi);
+    }
+
+    public void tambahNotifikasi(Notifikasi notifikasi) {
+        daftarNotifikasi.add(notifikasi);
+    }
+
+    public void tambahAdmin(Admin admin) {
+        daftarAdmin.add(admin);
+    }
+}
+
 
