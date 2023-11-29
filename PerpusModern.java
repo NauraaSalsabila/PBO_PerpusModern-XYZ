@@ -1,3 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tahap2_pbo;
+
+/**
+ *
+ * @author HP
+ */
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +21,6 @@ public class Main {
         boolean inginLogin = true;
 
         while (inginLogin) {
-            // Menampilkan menu login atau pendaftaran
             System.out.println("Selamat datang di Perpustakaan XYZ");
             System.out.println("1. Login");
             System.out.println("2. Daftar sebagai Anggota");
@@ -19,14 +29,12 @@ public class Main {
             int jenisAksi = scanner.nextInt();
 
             if (jenisAksi == 1) {
-                // Login
                 System.out.println("1. Login sebagai Anggota");
                 System.out.println("2. Login sebagai Admin");
                 System.out.print("Pilih jenis login (1/2): ");
                 int jenisLogin = scanner.nextInt();
 
                 if (jenisLogin == 1) {
-                    // Login sebagai Anggota
                     System.out.print("Masukkan nomor anggota: ");
                     String nomorAnggota = scanner.next();
 
@@ -40,13 +48,11 @@ public class Main {
 
                     if (anggotaLogin != null) {
                         System.out.println("Selamat datang, " + anggotaLogin.getNama() + "!");
-                        // Setelah login, tampilkan menu pilihan untuk anggota
                         tampilkanMenuAnggota(anggotaLogin, perpustakaan, scanner);
                     } else {
                         System.out.println("Nomor anggota tidak ditemukan.");
                     }
                 } else if (jenisLogin == 2) {
-                    // Login sebagai Admin
                     System.out.print("Masukkan username admin: ");
                     String usernameAdmin = scanner.next();
                     System.out.print("Masukkan password admin: ");
@@ -62,7 +68,6 @@ public class Main {
 
                     if (adminLogin != null) {
                         System.out.println("Selamat datang, Admin!");
-                        // Setelah login, tampilkan menu pilihan untuk admin
                         tampilkanMenuAdmin(adminLogin, perpustakaan, scanner);
                     } else {
                         System.out.println("Username atau password admin salah.");
@@ -71,18 +76,15 @@ public class Main {
                     System.out.println("Pilihan tidak valid.");
                 }
             } else if (jenisAksi == 2) {
-                // Pendaftaran Anggota
                 System.out.print("Masukkan nama: ");
                 String namaAnggota = scanner.next();
                 System.out.print("Masukkan alamat: ");
                 String alamatAnggota = scanner.next();
 
-                // Buat objek AnggotaPerpustakaan dan tambahkan ke dalam daftar anggota perpustakaan
                 AnggotaPerpustakaan anggotaBaru = new AnggotaPerpustakaan(namaAnggota, alamatAnggota);
-                anggotaBaru.registerAnggota();
+                anggotaBaru.register();
                 perpustakaan.tambahAnggota(anggotaBaru);
 
-                // Tanyakan apakah ingin login lagi atau tidak
                 boolean pilihanValid = false;
                 while (!pilihanValid) {
                     System.out.print("Apakah ingin login lagi? (y/n): ");
@@ -104,15 +106,11 @@ public class Main {
         }
     }
 
-    // Metode untuk menampilkan menu pilihan untuk anggota setelah login
     private static void tampilkanMenuAnggota(AnggotaPerpustakaan anggota, Perpustakaan perpustakaan, Scanner scanner) {
         boolean inginLogout = false;
 
         while (!inginLogout) {
-            // Membersihkan layar konsol
             clearScreen();
-
-            // Menampilkan menu pilihan untuk anggota
             System.out.println("Menu Anggota:");
             System.out.println("1. Pinjam Buku");
             System.out.println("2. Lihat Riwayat Peminjaman");
@@ -123,18 +121,15 @@ public class Main {
 
             switch (pilihanMenu) {
                 case 1:
-                    // Implementasi pinjam buku
                     System.out.print("Masukkan nomor ISBN buku yang ingin dipinjam: ");
                     String nomorISBN = scanner.next();
                     // (Implementasi logika peminjaman buku)
                     break;
                 case 2:
-                    // Implementasi lihat riwayat peminjaman
                     System.out.println("Riwayat Peminjaman:");
-                    System.out.println(anggota.displaySejarahPeminjaman());
+                    System.out.println(anggota.displayPeminjaman());
                     break;
                 case 3:
-                    // Logout
                     System.out.println("Logout berhasil.");
                     inginLogout = true;
                     break;
@@ -145,15 +140,11 @@ public class Main {
         }
     }
 
-    // Metode untuk menampilkan menu pilihan untuk admin setelah login
     private static void tampilkanMenuAdmin(Admin admin, Perpustakaan perpustakaan, Scanner scanner) {
         boolean inginLogout = false;
 
         while (!inginLogout) {
-            // Membersihkan layar konsol
             clearScreen();
-
-            // Menampilkan menu pilihan untuk admin
             System.out.println("Menu Admin:");
             System.out.println("1. Tambah Buku");
             System.out.println("2. Lihat Riwayat Transaksi");
@@ -164,9 +155,36 @@ public class Main {
 
             switch (pilihanMenu) {
                 case 1:
-                    // Implementasi tambah buku
                     System.out.print("Masukkan judul buku: ");
                     String judulBuku = scanner.next();
                     System.out.print("Masukkan pengarang buku: ");
                     String pengarangBuku = scanner.next();
                     System.out.print("Masukkan nomor ISBN buku: ");
+                    String nomorISBNBuku = scanner.next();
+
+                    Buku bukuBaru = new Buku(judulBuku, pengarangBuku, nomorISBNBuku);
+                    perpustakaan.tambahBuku(bukuBaru);
+
+                    System.out.println("Buku berhasil ditambahkan.");
+                    break;
+                case 2:
+                    System.out.println("Riwayat Transaksi:");
+                    System.out.println(perpustakaan.displayRiwayatTransaksi());
+                    break;
+                case 3:
+                    System.out.println("Logout berhasil.");
+                    inginLogout = true;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+                    break;
+            }
+        }
+    }
+
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+}
+
