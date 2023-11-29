@@ -9,52 +9,26 @@ package tahap2_pbo;
  *
  * @author HP
  */
-import java.util.ArrayList;
-import java.util.List;
-
-public class AnggotaPerpustakaan {
-    private int idAnggota;
-    private int nomorAnggota;
+public class Admin {
+    private int idAdmin;
     private String nama;
-    private String alamat;
-    private List<TransaksiPeminjaman> sejarahPeminjaman;
+    private String username;
+    private String password;
 
-    public AnggotaPerpustakaan(int idAnggota, int nomorAnggota, String nama, String alamat) {
-        this.idAnggota = idAnggota;
-        this.nomorAnggota = nomorAnggota;
+    public Admin(int idAdmin, String nama, String username, String password) {
+        this.idAdmin = idAdmin;
         this.nama = nama;
-        this.alamat = alamat;
-        this.sejarahPeminjaman = new ArrayList<>();
+        this.username = username;
+        this.password = password;
     }
 
-    public void register() {
-        System.out.println("Anggota berhasil diregistrasi");
+    public boolean Login() {
+        return username.equals("admin") && password.equals("admin123");
     }
 
-    public String displayPeminjaman() {
-        StringBuilder result = new StringBuilder("Sejarah Peminjaman:\n");
-        for (TransaksiPeminjaman transaksi : sejarahPeminjaman) {
-            result.append(transaksi.displayInfo()).append("\n");
-        }
-        return result.toString();
+    public void tambahBuku(Buku buku) {
+        System.out.println("Buku berhasil ditambahkan: " + buku.getJudul());
     }
-
-    public void tambahPeminjaman(TransaksiPeminjaman transaksi) {
-        sejarahPeminjaman.add(transaksi);
-    }
-
-    public int getIdAnggota() {
-        return idAnggota;
-    }
-
-    public int getNomorAnggota() {
-        return nomorAnggota;
-    }
-
-    public String getNama() {
-        return nama;
-    }
-
 }
 
 
