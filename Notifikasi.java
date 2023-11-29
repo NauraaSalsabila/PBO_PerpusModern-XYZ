@@ -9,24 +9,40 @@ package tahap2_pbo;
  *
  * @author HP
  */
-public class Notifikasi {
-    private int idNotifikasi;
+import java.util.Date;
+
+public class TransaksiPeminjaman {
+    private int idTransaksi;
     private AnggotaPerpustakaan anggota;
-    private String isi;
+    private Buku buku;
+    private Date tanggalPinjam;
+    private int durasiPinjam;
 
-    public Notifikasi(int idNotifikasi, AnggotaPerpustakaan anggota, String isi) {
-        this.idNotifikasi = idNotifikasi;
+    public TransaksiPeminjaman(int idTransaksi, AnggotaPerpustakaan anggota, Buku buku, Date tanggalPinjam, int durasiPinjam) {
+        this.idTransaksi = idTransaksi;
         this.anggota = anggota;
-        this.isi = isi;
+        this.buku = buku;
+        this.tanggalPinjam = tanggalPinjam;
+        this.durasiPinjam = durasiPinjam;
     }
 
-    public void kirimNotifikasi() {
-        System.out.println("Notifikasi terkirim ke: " + anggota.getNama());
+    public int Denda() {
+        int dendaPerHari = 100;
+        Date currentDate = new Date();
+        long selisihHari = (currentDate.getTime() - tanggalPinjam.getTime()) / (24 * 60 * 60 * 1000);
+        int denda = (int) Math.max(0, selisihHari * dendaPerHari);
+        return denda;
     }
 
-    public String displayNotifikasi() {
-        return String.format("ID Notifikasi: %d, Isi: %s", idNotifikasi, isi);
+    public String displayInfo() {
+        return String.format("ID Transaksi: %d, Buku: %s, Tanggal Pinjam: %s, Durasi Pinjam: %d hari",
+                idTransaksi, buku.getJudul(), tanggalPinjam.toString(), durasiPinjam);
     }
+
+    public Date getTanggalPinjam() {
+        return tanggalPinjam;
+    }
+
 }
 
 
